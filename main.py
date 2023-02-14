@@ -30,7 +30,16 @@ def find_mismatch(text):
     return "Success"
 
 def main():
-    text = input()
+    while True:
+        input_type = input()
+        if input_type.upper() in "FI":
+            break
+
+    if input_type.upper() in "I":
+        text = input()
+    else:
+        text = ""
+
     mismatch = find_mismatch(text)
     # Printing answer, write your code here
     print(mismatch)
