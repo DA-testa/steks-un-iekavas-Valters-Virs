@@ -1,6 +1,7 @@
 # python3
 
 from collections import namedtuple
+import pathlib
 
 Bracket = namedtuple("Bracket", ["char", "position"])
 
@@ -14,11 +15,11 @@ def find_mismatch(text):
 
     for i, next in enumerate(text):
         if next in "([{":
-            # Process opening bracket, write your code here
+            # Process opening bracket
             opening_brackets_stack.append(Bracket(next, i))
 
         if next in ")]}":
-            # Process closing bracket, write your code here
+            # Process closing bracket
             if not opening_brackets_stack:
                 return 1
             if not are_matching(opening_brackets_stack.pop().char, next):
@@ -31,17 +32,38 @@ def find_mismatch(text):
 
 def main():
     while True:
+        # Input F or I
         input_type = input()
-        if input_type.upper() in "FI":
+        if input_type.upper()[0] == "I" or input_type.upper()[0] == "F":
             break
 
-    if input_type.upper() in "I":
+    if input_type.upper()[0] == "I":
+        # Input I
         text = input()
-    else:
-        text = ""
+    elif input_type.upper()[0] == "F":
+        # Input F, get files
+        path = pathlib.Path(__file__).parent.resolve()
+        files = list(path.joinpath('test').glob('*[0-9]'))
+        files.sort()
+
+        # Display files
+        print("Choose file")
+        for key, file in enumerate(files):
+            print(str(key + 1) + ". " + file.name)
+
+        while True:
+            file_choice = input()
+
+            try:
+                if int(file_choice) in range(1, len(files) + 1):
+                    break
+            except:
+                pass
+
+        text = files[int(file_choice) - 1].read_text()
 
     mismatch = find_mismatch(text)
-    # Printing answer, write your code here
+    # Printing answer
     print(mismatch)
 
 
